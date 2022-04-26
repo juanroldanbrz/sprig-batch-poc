@@ -24,8 +24,8 @@ public class JobConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job importUserJob(Step step1) {
-        return jobBuilderFactory.get("importUserJob")
+    public Job syncDatJob(Step step1) {
+        return jobBuilderFactory.get("syncDatJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(step1)
                 .end()
@@ -36,8 +36,7 @@ public class JobConfiguration {
     public Step step1(ItemReader<OriginalData> itemReader,
             CompositeItemWriter<DataWrapper> writer,
             DataItemProcessor dataItemProcessor) {
-        return stepBuilderFactory.get("step1")
-                .<OriginalData, DataWrapper> chunk(5)
+        return stepBuilderFactory.get("firstStep").<OriginalData, DataWrapper>chunk(5)
                 .reader(itemReader)
                 .processor(dataItemProcessor)
                 .writer(writer)
