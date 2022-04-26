@@ -1,0 +1,25 @@
+version: '2.1'
+volumes:
+  origin-data-volume: {}
+  target-data-volume: {}
+services:
+  origin_db:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: origin_db_root
+      MYSQL_DATABASE: origin_db
+    volumes:
+      - origin-data-volume:/var/lib/mysql
+      - ./origin-db.sql:/docker-entrypoint-initdb.d/init.sql
+  target_db:
+    image: mariadb
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: target_db_root
+      MYSQL_DATABASE: target_db
+    volumes:
+      - target-data-volume:/var/lib/mysql
+      - ./target-db.sql:/docker-entrypoint-initdb.d/init.sql
